@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const postcss = require('postcss');
+const sc = require('postcss-scss');
 
 // the file name as an entry point for postcss compilation
 // also used to define the output filename in our output /css folder.
-const fileName = "styles.css";
+const fileName = "styles.scss";
 
 module.exports = class {
   async data () {
@@ -21,11 +22,13 @@ module.exports = class {
       // require('postcss-comment'),
       require('precss'),
       require('postcss-import'),
+      // require('postcss-use'),
+      require('postcss-simple-vars'),
       require('postcss-mixins'),
       require('postcss-color-mix'),
       require('cssnano')
     ])
-    .process(rawCss, { from: rawFilepath })
+    .process(rawCss, { from: rawFilepath, parser: sc })
     .then(result => result.css);
   };
 }
